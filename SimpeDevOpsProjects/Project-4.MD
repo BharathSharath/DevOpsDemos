@@ -27,7 +27,7 @@ In *part-01* we create Docker image on ansible server through Jenkins job and pu
 1. Login to Jenkins console
 1. Create *Jenkins job*, Fill the following details,
    - *Source Code Management:*
-      - Repository : `https://github.com/ValaxyTech/hello-world.git`
+      - Repository : `https://github.com/bharathsharath/hello-world.git`
       - Branches to build : `*/master`  
    - *Build:*
      - Root POM:`pom.xml`
@@ -37,18 +37,18 @@ In *part-01* we create Docker image on ansible server through Jenkins job and pu
        - Name: `ansible_server`
        - Source files	: `webapp/target/*.war`
        - Remove prefix	: `webapp/target`
-       - Remote directory	: `//opt//docker`
+       - Remote directory	: `/`
 
      - *Send files or execute commands over SSH*
        - Name: `ansible_server`
        - Source files	: `Dockerfile`
-       - Remote directory	: `//opt//docker`
+       - Remote directory	: `/`
        - Exec Command: 
-	      - `cd /opt/docker`
-          - `docker build -t valaxy_demo .`
-	      - `docker tag valaxy_demo valaxy/valaxy_demo`
-          - `docker push valaxy/valaxy_demo`
-          - `docker rmi valaxy_demo valaxy/valaxy_demo`
+	      - `cd /home/ansadmin`
+          - `docker build -t bharath .`
+	      - `docker tag bharath bharathsharath/bharath`
+          - `docker push bharathsharath/bharath`
+          - `docker rmi bharath bharathsharath/bharath`
               
 1. Login to Docker host and check images and containers. (no images and containers)
 
@@ -56,7 +56,7 @@ In *part-01* we create Docker image on ansible server through Jenkins job and pu
 
 1. Execute Jenkins job
 
-1. check images in Docker hub. Now you could able to see new images pushed to Valaxy Docker_Hub
+1. check images in Docker hub. Now you could able to see new images pushed to bharathsharath Docker_Hub
 
 #### Troubleshooting:
 1. Docker should be installed on ansible server 
@@ -74,14 +74,14 @@ In *Part-02* we create *create_docker_container.yml* playbook. this get intiated
        become: true
        tasks:
         - name: stop previous version docker
-          shell: docker stop valaxy_demo
+          shell: docker stop bharath
         - name: remove stopped container
-          shell: docker rm -f valaxy_demo	  
+          shell: docker rm -f bharath	  
         - name: remove docker images
-          shell: docker image rm -f valaxy/valaxy_demo
+          shell: docker image rm -f bharathsharath/bharath
           
         - name: create docker image
-          shell: docker run -d --name valaxy_demo -p 8090:8080 valaxy/valaxy_demo
+          shell: docker run -it -d --name bharath -p 8090:8080 bharathsharath/bharath
 
 1. Add this script to Jenkins job.
    - Chose *"configure"* to modify your jenkins job. 
@@ -89,7 +89,7 @@ In *Part-02* we create *create_docker_container.yml* playbook. this get intiated
         - Send files or execute commands over SSH
           - Exec Command: 
           ```sh
-             cd /opt/playbooks
+             cd /home/ansadmin
              ansible-playbook create_docker_container.yml
             ```
           
@@ -117,7 +117,7 @@ Lets modify jenkins job which was created in *Part-01* as below.
 
 1. Create Jenkins job 
    - *Source Code Management:*
-      - Repository : `https://github.com/ValaxyTech/hello-world.git`
+      - Repository : `https://github.com/bharathsharath/hello-world.git`
       - Branches to build : `*/master`  
    - *Build:*
      - Root POM:`pom.xml`
@@ -127,19 +127,19 @@ Lets modify jenkins job which was created in *Part-01* as below.
      - Name: `ansible_server`
      - Source files	: `webapp/target/*.war`
      - Remove prefix	: `webapp/target`
-     - Remote directory	: `//opt//docker`
+     - Remote directory	: `/`
 
    - *Send files or execute commands over SSH*
      - Name: `ansible_server`
      - Source files	: `Dockerfile`
-     - Remote directory	: `//opt//docker`
+     - Remote directory	: `/`
       	- `cd /opt/docker`
         - `docker build -t $JOB_NAME:v1.$BUILD_ID .`
-        - `docker tag $JOB_NAME:v1.$BUILD_ID valaxy/$JOB_NAME:v1.$BUILD_ID`
-        - `docker tag $JOB_NAME:v1.$BUILD_ID valaxy/$JOB_NAME:latest`
-        - `docker push valaxy/$JOB_NAME:v1.$BUILD_ID`
-        - `docker push valaxy/$JOB_NAME:latest`
-        - `docker rmi $JOB_NAME:v1.$BUILD_ID valaxy/$JOB_NAME:v1.$BUILD_ID` 
-        - `valaxy/$JOB_NAME:latest`
+        - `docker tag $JOB_NAME:v1.$BUILD_ID bharathsharath/$JOB_NAME:v1.$BUILD_ID`
+        - `docker tag $JOB_NAME:v1.$BUILD_ID bharathsharath/$JOB_NAME:latest`
+        - `docker push bharathsharath/$JOB_NAME:v1.$BUILD_ID`
+        - `docker push bharathsharath/$JOB_NAME:latest`
+        - `docker rmi $JOB_NAME:v1.$BUILD_ID bharathsharath/$JOB_NAME:v1.$BUILD_ID` 
+        - `bharathsharath/$JOB_NAME:latest`
 ##### References
 [1] - [Jenkins Docs - Building Software Projects](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project)
