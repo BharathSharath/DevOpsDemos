@@ -12,7 +12,7 @@ We know how to use work with each and Git, Jenkins independently. What if you wa
 1. Login to Jenkins console
 1. Create *Jenkins job*, Fill the following details,
    - *Source Code Management:*
-      - Repository: `https://github.com/ValaxyTech/hello-world.git`
+      - Repository: `https://github.com/BharathSharath/hello-world.git`
       - Branches to build : `*/master`  
    - *Build:*
      - Root POM:`pom.xml`
@@ -28,8 +28,8 @@ To deploy our build artifacts on tomcat server our Jenkins server need access. F
 
 - setup credentials
   - `credentials` > `jenkins` > `Global credentials` > `add credentials`
-    - Username	: `deployer`
-    - Password : `XXXXXXX`
+    - Username	: `tomat_username`
+    - Password : `tomat_passwd`
     - id      :  `Tomcat_user`
     - Description: `Tomcat user to deploy on tomcat server`
 
@@ -47,6 +47,6 @@ Save and run the job now.
 Now job is running fine but to make this as Continuous Integration and Continuous Deployment Tod do that go back and modify job as below. 
   - Build Triggers
     - Poll SCM
-      - schedule `*/2 * * * *`
+      - schedule `* * * * *`
 
 Save the job and modify the code in GitHub. Then you could see your job get trigger a build without any manual intervention.
